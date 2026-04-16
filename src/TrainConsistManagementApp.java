@@ -344,6 +344,33 @@ public class TrainConsistManagementApp {
         bogie.setCargo(cargo);
     }
 
+    // UC16: Sort Passenger Bogies by Capacity (Bubble Sort)
+    public void sortBogiesBubbleSort() {
+        int[] capacities = {72, 56, 24, 70, 60};
+        System.out.print("Original Capacities: ");
+        for (int c : capacities) {
+            System.out.print(c + " ");
+        }
+        System.out.println();
+
+        int n = capacities.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (capacities[j] > capacities[j + 1]) {
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+                }
+            }
+        }
+
+        System.out.print("Sorted Capacities (Bubble Sort): ");
+        for (int c : capacities) {
+            System.out.print(c + " ");
+        }
+        System.out.println();
+    }
+
     static class InvalidCapacityException extends Exception {
         public InvalidCapacityException(String message) {
             super(message);
@@ -461,5 +488,8 @@ public class TrainConsistManagementApp {
 
         System.out.println("\n--- UC15: Safe Cargo Assignment Using try-catch-finally ---");
         app.assignCargoSafely();
+
+        System.out.println("\n--- UC16: Sort Passenger Bogies by Capacity (Bubble Sort) ---");
+        app.sortBogiesBubbleSort();
     }
 }
