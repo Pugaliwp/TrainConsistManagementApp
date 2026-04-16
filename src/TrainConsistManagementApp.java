@@ -104,7 +104,7 @@ public class TrainConsistManagementApp {
     }
 
     // UC7: Sort Bogies by Capacity
-    public void sortBogiesByCapacity() {
+    public void sortBogiesByCapacity() throws InvalidCapacityException {
         List<Bogie> passengerBogies = new ArrayList<>();
         passengerBogies.add(new Bogie("Sleeper", 72));
         passengerBogies.add(new Bogie("First Class", 24));
@@ -125,7 +125,7 @@ public class TrainConsistManagementApp {
     }
 
     // UC8: Filter Passenger Bogies Using Streams
-    public void filterBogiesByCapacity() {
+    public void filterBogiesByCapacity() throws InvalidCapacityException {
         List<Bogie> passengerBogies = new ArrayList<>();
         passengerBogies.add(new Bogie("Sleeper", 72));
         passengerBogies.add(new Bogie("First Class", 24));
@@ -143,7 +143,7 @@ public class TrainConsistManagementApp {
     }
 
     // UC9: Group Bogies by Type
-    public void groupBogiesByType() {
+    public void groupBogiesByType() throws InvalidCapacityException {
         List<Bogie> passengerBogies = new ArrayList<>();
         passengerBogies.add(new Bogie("Sleeper", 72));
         passengerBogies.add(new Bogie("First Class", 24));
@@ -164,7 +164,7 @@ public class TrainConsistManagementApp {
     }
 
     // UC10: Count Total Seats in Train
-    public void countTotalSeats() {
+    public void countTotalSeats() throws InvalidCapacityException {
         List<Bogie> passengerBogies = new ArrayList<>();
         passengerBogies.add(new Bogie("Sleeper", 72));
         passengerBogies.add(new Bogie("First Class", 24));
@@ -244,7 +244,7 @@ public class TrainConsistManagementApp {
     }
 
     // UC13: Performance Comparison (Loops vs Streams)
-    public void comparePerformance() {
+    public void comparePerformance() throws InvalidCapacityException {
         List<Bogie> largeBogieList = new ArrayList<>();
         // Generate a large dataset
         for (int i = 0; i < 100000; i++) {
@@ -285,11 +285,47 @@ public class TrainConsistManagementApp {
         }
     }
 
+    // UC14: Handle Invalid Bogie Capacity (Custom Exception)
+    public void validatePassengerBogieCapacity() {
+        System.out.println("Attempting to create valid passenger bogie...");
+        try {
+            Bogie validBogie = new Bogie("Sleeper", 72);
+            System.out.println("Success: " + validBogie);
+        } catch (InvalidCapacityException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        System.out.println("\nAttempting to create invalid passenger bogie (Negative Capacity)...");
+        try {
+            Bogie invalidBogie = new Bogie("AC Chair", -10);
+            System.out.println("Success: " + invalidBogie);
+        } catch (InvalidCapacityException e) {
+            System.out.println("Validation Error Caught: " + e.getMessage());
+        }
+
+        System.out.println("\nAttempting to create invalid passenger bogie (Zero Capacity)...");
+        try {
+            Bogie zeroBogie = new Bogie("General", 0);
+            System.out.println("Success: " + zeroBogie);
+        } catch (InvalidCapacityException e) {
+            System.out.println("Validation Error Caught: " + e.getMessage());
+        }
+    }
+
+    static class InvalidCapacityException extends Exception {
+        public InvalidCapacityException(String message) {
+            super(message);
+        }
+    }
+
     static class Bogie {
         private String name;
         private int capacity;
 
-        public Bogie(String name, int capacity) {
+        public Bogie(String name, int capacity) throws InvalidCapacityException {
+            if (capacity <= 0) {
+                throw new InvalidCapacityException("Capacity must be greater than zero");
+            }
             this.name = name;
             this.capacity = capacity;
         }
@@ -331,7 +367,7 @@ public class TrainConsistManagementApp {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InvalidCapacityException {
         TrainConsistManagementApp app = new TrainConsistManagementApp();
         app.displayConsistSummary();
         
@@ -377,5 +413,8 @@ public class TrainConsistManagementApp {
 
         System.out.println("\n--- UC13: Performance Comparison (Loops vs Streams) ---");
         app.comparePerformance();
+
+        System.out.println("\n--- UC14: Handle Invalid Bogie Capacity (Custom Exception) ---");
+        app.validatePassengerBogieCapacity();
     }
 }
