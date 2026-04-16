@@ -243,6 +243,48 @@ public class TrainConsistManagementApp {
         }
     }
 
+    // UC13: Performance Comparison (Loops vs Streams)
+    public void comparePerformance() {
+        List<Bogie> largeBogieList = new ArrayList<>();
+        // Generate a large dataset
+        for (int i = 0; i < 100000; i++) {
+            largeBogieList.add(new Bogie("Sleeper", 72));
+            largeBogieList.add(new Bogie("First Class", 24));
+            largeBogieList.add(new Bogie("AC Chair", 60));
+            largeBogieList.add(new Bogie("General", 90));
+        }
+
+        System.out.println("Benchmarking with dataset of size: " + largeBogieList.size());
+
+        // Baseline: Loop-Based Filtering
+        long loopStartTime = System.nanoTime();
+        List<Bogie> loopFiltered = new ArrayList<>();
+        for (Bogie b : largeBogieList) {
+            if (b.getCapacity() > 60) {
+                loopFiltered.add(b);
+            }
+        }
+        long loopEndTime = System.nanoTime();
+        long loopDuration = loopEndTime - loopStartTime;
+
+        // Alternative: Stream-Based Filtering
+        long streamStartTime = System.nanoTime();
+        List<Bogie> streamFiltered = largeBogieList.stream()
+                .filter(b -> b.getCapacity() > 60)
+                .collect(Collectors.toList());
+        long streamEndTime = System.nanoTime();
+        long streamDuration = streamEndTime - streamStartTime;
+
+        System.out.println("Loop-based filtered count: " + loopFiltered.size() + " | Time: " + loopDuration + " ns");
+        System.out.println("Stream-based filtered count: " + streamFiltered.size() + " | Time: " + streamDuration + " ns");
+        
+        if (loopFiltered.size() == streamFiltered.size()) {
+            System.out.println("Verification: Both filtering methods produced identical results.");
+        } else {
+            System.out.println("Verification FAILED: Results differ!");
+        }
+    }
+
     static class Bogie {
         private String name;
         private int capacity;
@@ -332,5 +374,8 @@ public class TrainConsistManagementApp {
 
         System.out.println("\n--- UC12: Safety Compliance Check for Goods Bogies ---");
         app.checkSafetyCompliance();
+
+        System.out.println("\n--- UC13: Performance Comparison (Loops vs Streams) ---");
+        app.comparePerformance();
     }
 }
