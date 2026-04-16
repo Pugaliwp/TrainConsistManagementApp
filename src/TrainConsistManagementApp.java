@@ -454,6 +454,46 @@ public class TrainConsistManagementApp {
         }
     }
 
+    // UC20: Exception Handling During Search Operations
+    public void validateSearchState() {
+        System.out.println("Processing valid search state:");
+        try {
+            String[] validArray = {"BG101", "BG205"};
+            performSafeSearch(validArray, "BG101");
+        } catch (IllegalStateException e) {
+            System.out.println("Search Error: " + e.getMessage());
+        }
+
+        System.out.println("\nProcessing invalid search state (Empty Array):");
+        try {
+            String[] emptyArray = {};
+            performSafeSearch(emptyArray, "BG101");
+        } catch (IllegalStateException e) {
+            System.out.println("Search Error Caught: " + e.getMessage());
+        }
+    }
+
+    private void performSafeSearch(String[] array, String target) {
+        if (array == null || array.length == 0) {
+            throw new IllegalStateException("Cannot perform search: Train consist contains no bogies.");
+        }
+        
+        System.out.println("Validation passed. Proceeding with search for: " + target);
+        boolean found = false;
+        for (String id : array) {
+            if (id.equals(target)) {
+                found = true;
+                break;
+            }
+        }
+        
+        if (found) {
+            System.out.println("Result: Bogie ID " + target + " FOUND in consist.");
+        } else {
+            System.out.println("Result: Bogie ID " + target + " NOT FOUND.");
+        }
+    }
+
     static class InvalidCapacityException extends Exception {
         public InvalidCapacityException(String message) {
             super(message);
@@ -583,5 +623,8 @@ public class TrainConsistManagementApp {
 
         System.out.println("\n--- UC19: Binary Search for Bogie ID (Optimized Searching) ---");
         app.searchBogieBinary();
+
+        System.out.println("\n--- UC20: Exception Handling During Search Operations ---");
+        app.validateSearchState();
     }
 }
