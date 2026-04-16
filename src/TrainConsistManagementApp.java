@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -121,6 +122,24 @@ public class TrainConsistManagementApp {
         }
     }
 
+    // UC8: Filter Passenger Bogies Using Streams
+    public void filterBogiesByCapacity() {
+        List<Bogie> passengerBogies = new ArrayList<>();
+        passengerBogies.add(new Bogie("Sleeper", 72));
+        passengerBogies.add(new Bogie("First Class", 24));
+        passengerBogies.add(new Bogie("AC Chair", 60));
+        passengerBogies.add(new Bogie("General", 90));
+        
+        System.out.println("Original Passenger Bogies List: " + passengerBogies);
+        
+        // Filter Bogies with capacity > 60 using Streams
+        List<Bogie> filteredBogies = passengerBogies.stream()
+                .filter(b -> b.getCapacity() > 60)
+                .collect(Collectors.toList());
+                
+        System.out.println("Filtered High Capacity Bogies (> 60 seats): " + filteredBogies);
+    }
+
     static class Bogie {
         private String name;
         private int capacity;
@@ -172,5 +191,8 @@ public class TrainConsistManagementApp {
         
         System.out.println("\n--- UC7: Sort Bogies by Capacity (Comparator) ---");
         app.sortBogiesByCapacity();
+        
+        System.out.println("\n--- UC8: Filter Bogies Using Streams ---");
+        app.filterBogiesByCapacity();
     }
 }
