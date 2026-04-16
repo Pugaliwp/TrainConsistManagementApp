@@ -210,6 +210,39 @@ public class TrainConsistManagementApp {
         }
     }
 
+    // UC12: Safety Compliance Check for Goods Bogies
+    public void checkSafetyCompliance() {
+        List<GoodsBogie> goodsTrain = new ArrayList<>();
+        goodsTrain.add(new GoodsBogie("Rectangular", "Coal"));
+        goodsTrain.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        goodsTrain.add(new GoodsBogie("Open", "Grain"));
+        
+        System.out.println("Validating Goods Train Formation: " + goodsTrain);
+        
+        // Safety Rule: Cylindrical bogies must ONLY carry Petroleum.
+        boolean isSafe = goodsTrain.stream()
+                .allMatch(b -> !b.getShape().equals("Cylindrical") || b.getCargo().equals("Petroleum"));
+                
+        if (isSafe) {
+            System.out.println("Safety Check: COMPLIANT. Train is safe to dispatch.");
+        } else {
+            System.out.println("Safety Check: FAILED. Rule violation detected in consist!");
+        }
+
+        // Simulating a rule violation
+        goodsTrain.add(new GoodsBogie("Cylindrical", "Coal")); 
+        System.out.println("\nAfter adding violating bogie (Cylindrical carrying Coal):");
+        
+        boolean isSafeAfterViolation = goodsTrain.stream()
+                .allMatch(b -> !b.getShape().equals("Cylindrical") || b.getCargo().equals("Petroleum"));
+                
+        if (isSafeAfterViolation) {
+            System.out.println("Safety Check: COMPLIANT. Train is safe to dispatch.");
+        } else {
+            System.out.println("Safety Check: FAILED. Rule violation detected in consist!");
+        }
+    }
+
     static class Bogie {
         private String name;
         private int capacity;
@@ -230,6 +263,29 @@ public class TrainConsistManagementApp {
         @Override
         public String toString() {
             return name + " (" + capacity + " seats)";
+        }
+    }
+
+    static class GoodsBogie {
+        private String shape;
+        private String cargo;
+
+        public GoodsBogie(String shape, String cargo) {
+            this.shape = shape;
+            this.cargo = cargo;
+        }
+
+        public String getShape() {
+            return shape;
+        }
+
+        public String getCargo() {
+            return cargo;
+        }
+
+        @Override
+        public String toString() {
+            return shape + " (" + cargo + ")";
         }
     }
 
@@ -273,5 +329,8 @@ public class TrainConsistManagementApp {
         
         System.out.println("\n--- UC11: Validate Train ID & Cargo Codes (Regex) ---");
         app.validateInputFormats();
+
+        System.out.println("\n--- UC12: Safety Compliance Check for Goods Bogies ---");
+        app.checkSafetyCompliance();
     }
 }
