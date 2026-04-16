@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TrainConsistManagementApp {
     private List<String> consist;
@@ -179,6 +181,35 @@ public class TrainConsistManagementApp {
         System.out.println("Total Seating Capacity in Train: " + totalSeats + " seats");
     }
 
+    // UC11: Validate Train ID & Cargo Codes
+    public void validateInputFormats() {
+        String[] trainIds = {"TRN-1234", "TRAIN12", "TRN12A", "1234-TRN", "TRN-123", "TRN-12345", ""};
+        String[] cargoCodes = {"PET-AB", "PET-ab", "PET123", "AB-PET", ""};
+
+        Pattern trainIdPattern = Pattern.compile("^TRN-\\d{4}$");
+        Pattern cargoCodePattern = Pattern.compile("^PET-[A-Z]{2}$");
+
+        System.out.println("Train ID Validation:");
+        for (String id : trainIds) {
+            Matcher m = trainIdPattern.matcher(id);
+            if (m.matches()) {
+                System.out.println(id + " -> VALID");
+            } else {
+                System.out.println(id + " -> INVALID");
+            }
+        }
+
+        System.out.println("\nCargo Code Validation:");
+        for (String code : cargoCodes) {
+            Matcher m = cargoCodePattern.matcher(code);
+            if (m.matches()) {
+                System.out.println(code + " -> VALID");
+            } else {
+                System.out.println(code + " -> INVALID");
+            }
+        }
+    }
+
     static class Bogie {
         private String name;
         private int capacity;
@@ -239,5 +270,8 @@ public class TrainConsistManagementApp {
         
         System.out.println("\n--- UC10: Count Total Seats in Train (reduce) ---");
         app.countTotalSeats();
+        
+        System.out.println("\n--- UC11: Validate Train ID & Cargo Codes (Regex) ---");
+        app.validateInputFormats();
     }
 }
