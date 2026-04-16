@@ -14,8 +14,20 @@ public class TrainConsistManagementApp {
         System.out.println("Consist Summary: " + String.join(" - ", consist));
     }
 
+    // UC2: Add Passenger Bogies to Train
+    public void addPassengerBogie() {
+        consist.add("Passenger Bogie");
+        System.out.println("Passenger Bogie added to the consist.");
+    }
+
     public static void main(String[] args) {
         TrainConsistManagementApp app = new TrainConsistManagementApp();
+        app.displayConsistSummary();
+        
+        System.out.println("\nAdding passenger bogies...");
+        app.addPassengerBogie();
+        app.addPassengerBogie();
+        
         app.displayConsistSummary();
     }
 }
