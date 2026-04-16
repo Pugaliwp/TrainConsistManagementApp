@@ -312,8 +312,46 @@ public class TrainConsistManagementApp {
         }
     }
 
+    // UC15: Safe Cargo Assignment Using try-catch-finally
+    public void assignCargoSafely() {
+        System.out.println("Processing Safe Assignment:");
+        try {
+            GoodsBogie safeBogie = new GoodsBogie("Cylindrical", "None");
+            assignCargo(safeBogie, "Petroleum");
+            System.out.println("Result: " + safeBogie.getCargo() + " successfully assigned to " + safeBogie.getShape() + " bogie.");
+        } catch (CargoSafetyException e) {
+            System.out.println("Error Caught: " + e.getMessage());
+        } finally {
+            System.out.println("Assignment check complete for safe bogie.\n");
+        }
+
+        System.out.println("Processing Unsafe Assignment:");
+        try {
+            GoodsBogie unsafeBogie = new GoodsBogie("Rectangular", "None");
+            assignCargo(unsafeBogie, "Petroleum");
+            System.out.println("Result: " + unsafeBogie.getCargo() + " successfully assigned to " + unsafeBogie.getShape() + " bogie.");
+        } catch (CargoSafetyException e) {
+            System.out.println("Error Caught: " + e.getMessage());
+        } finally {
+            System.out.println("Assignment check complete for unsafe bogie.");
+        }
+    }
+
+    private void assignCargo(GoodsBogie bogie, String cargo) {
+        if (bogie.getShape().equals("Rectangular") && cargo.equals("Petroleum")) {
+            throw new CargoSafetyException("Unsafe assignment: Petroleum cannot be assigned to a Rectangular bogie.");
+        }
+        bogie.setCargo(cargo);
+    }
+
     static class InvalidCapacityException extends Exception {
         public InvalidCapacityException(String message) {
+            super(message);
+        }
+    }
+
+    static class CargoSafetyException extends RuntimeException {
+        public CargoSafetyException(String message) {
             super(message);
         }
     }
@@ -359,6 +397,10 @@ public class TrainConsistManagementApp {
 
         public String getCargo() {
             return cargo;
+        }
+
+        public void setCargo(String cargo) {
+            this.cargo = cargo;
         }
 
         @Override
@@ -416,5 +458,8 @@ public class TrainConsistManagementApp {
 
         System.out.println("\n--- UC14: Handle Invalid Bogie Capacity (Custom Exception) ---");
         app.validatePassengerBogieCapacity();
+
+        System.out.println("\n--- UC15: Safe Cargo Assignment Using try-catch-finally ---");
+        app.assignCargoSafely();
     }
 }
