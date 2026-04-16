@@ -409,6 +409,51 @@ public class TrainConsistManagementApp {
         }
     }
 
+    // UC19: Binary Search for Bogie ID (Optimized Searching)
+    public void searchBogieBinary() {
+        String[] bogieIds = {"BG309", "BG101", "BG550", "BG205", "BG412"};
+        System.out.println("Original Unsorted Bogie IDs: " + java.util.Arrays.toString(bogieIds));
+        
+        java.util.Arrays.sort(bogieIds);
+        System.out.println("Sorted Bogie IDs: " + java.util.Arrays.toString(bogieIds));
+        
+        String targetFound = "BG309";
+        binarySearch(bogieIds, targetFound);
+        
+        String targetNotFound = "BG999";
+        binarySearch(bogieIds, targetNotFound);
+    }
+    
+    private void binarySearch(String[] array, String target) {
+        if (array == null || array.length == 0) {
+            System.out.println("Binary Search: Bogie ID " + target + " NOT FOUND.");
+            return;
+        }
+
+        int low = 0;
+        int high = array.length - 1;
+        boolean found = false;
+        
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            int comparison = array[mid].compareTo(target);
+            
+            if (comparison == 0) {
+                found = true;
+                System.out.println("Binary Search: Bogie ID " + target + " FOUND at index " + mid + ".");
+                break;
+            } else if (comparison < 0) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        
+        if (!found) {
+            System.out.println("Binary Search: Bogie ID " + target + " NOT FOUND.");
+        }
+    }
+
     static class InvalidCapacityException extends Exception {
         public InvalidCapacityException(String message) {
             super(message);
@@ -535,5 +580,8 @@ public class TrainConsistManagementApp {
 
         System.out.println("\n--- UC18: Linear Search for Bogie ID (Array-Based Searching) ---");
         app.searchBogieLinear();
+
+        System.out.println("\n--- UC19: Binary Search for Bogie ID (Optimized Searching) ---");
+        app.searchBogieBinary();
     }
 }
