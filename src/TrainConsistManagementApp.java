@@ -371,6 +371,16 @@ public class TrainConsistManagementApp {
         System.out.println();
     }
 
+    // UC17: Sort Bogie Names Using Arrays.sort()
+    public void sortBogiesUsingArraysSort() {
+        String[] bogieNames = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
+        System.out.println("Original Bogie Names: " + java.util.Arrays.toString(bogieNames));
+        
+        java.util.Arrays.sort(bogieNames);
+        
+        System.out.println("Sorted Bogie Names (Arrays.sort): " + java.util.Arrays.toString(bogieNames));
+    }
+
     static class InvalidCapacityException extends Exception {
         public InvalidCapacityException(String message) {
             super(message);
@@ -491,5 +501,8 @@ public class TrainConsistManagementApp {
 
         System.out.println("\n--- UC16: Sort Passenger Bogies by Capacity (Bubble Sort) ---");
         app.sortBogiesBubbleSort();
+
+        System.out.println("\n--- UC17: Sort Bogie Names Using Arrays.sort() ---");
+        app.sortBogiesUsingArraysSort();
     }
 }
