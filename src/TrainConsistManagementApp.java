@@ -1,8 +1,10 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class TrainConsistManagementApp {
@@ -81,6 +83,22 @@ public class TrainConsistManagementApp {
         System.out.println("Final Train Formation (LinkedHashSet): " + formation);
     }
 
+    // UC6: Map Bogie to Capacity
+    public void mapBogieToCapacity() {
+        Map<String, Integer> bogieCapacities = new HashMap<>();
+        
+        // Use put() method to map bogie to capacity
+        bogieCapacities.put("Sleeper", 72);
+        bogieCapacities.put("AC Chair", 60);
+        bogieCapacities.put("First Class", 24);
+        
+        System.out.println("Bogie Capacity Details:");
+        // Iterate using entrySet()
+        for (Map.Entry<String, Integer> entry : bogieCapacities.entrySet()) {
+            System.out.println("Bogie Type: " + entry.getKey() + " | Capacity: " + entry.getValue() + " seats");
+        }
+    }
+
     public static void main(String[] args) {
         TrainConsistManagementApp app = new TrainConsistManagementApp();
         app.displayConsistSummary();
@@ -103,5 +121,8 @@ public class TrainConsistManagementApp {
         
         System.out.println("\n--- UC5: Preserve Insertion Order (LinkedHashSet) ---");
         app.preserveInsertionOrderConsist();
+        
+        System.out.println("\n--- UC6: Map Bogie to Capacity (HashMap) ---");
+        app.mapBogieToCapacity();
     }
 }
