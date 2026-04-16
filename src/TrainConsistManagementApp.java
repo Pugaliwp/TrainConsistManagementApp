@@ -161,6 +161,24 @@ public class TrainConsistManagementApp {
         });
     }
 
+    // UC10: Count Total Seats in Train
+    public void countTotalSeats() {
+        List<Bogie> passengerBogies = new ArrayList<>();
+        passengerBogies.add(new Bogie("Sleeper", 72));
+        passengerBogies.add(new Bogie("First Class", 24));
+        passengerBogies.add(new Bogie("AC Chair", 60));
+        passengerBogies.add(new Bogie("General", 90));
+        
+        System.out.println("Passenger Bogies in Train: " + passengerBogies);
+        
+        // Calculate total seats using Streams (map and reduce)
+        int totalSeats = passengerBogies.stream()
+                .map(Bogie::getCapacity)
+                .reduce(0, Integer::sum);
+                
+        System.out.println("Total Seating Capacity in Train: " + totalSeats + " seats");
+    }
+
     static class Bogie {
         private String name;
         private int capacity;
@@ -218,5 +236,8 @@ public class TrainConsistManagementApp {
         
         System.out.println("\n--- UC9: Group Bogies by Type (Collectors.groupingBy) ---");
         app.groupBogiesByType();
+        
+        System.out.println("\n--- UC10: Count Total Seats in Train (reduce) ---");
+        app.countTotalSeats();
     }
 }
