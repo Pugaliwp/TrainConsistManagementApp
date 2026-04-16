@@ -140,6 +140,27 @@ public class TrainConsistManagementApp {
         System.out.println("Filtered High Capacity Bogies (> 60 seats): " + filteredBogies);
     }
 
+    // UC9: Group Bogies by Type
+    public void groupBogiesByType() {
+        List<Bogie> passengerBogies = new ArrayList<>();
+        passengerBogies.add(new Bogie("Sleeper", 72));
+        passengerBogies.add(new Bogie("First Class", 24));
+        passengerBogies.add(new Bogie("AC Chair", 60));
+        passengerBogies.add(new Bogie("Sleeper", 72)); // Duplicate type to show grouping
+        passengerBogies.add(new Bogie("General", 90));
+        
+        System.out.println("Original Passenger Bogies List: " + passengerBogies);
+        
+        // Group bogies by their name/type using Streams
+        Map<String, List<Bogie>> groupedBogies = passengerBogies.stream()
+                .collect(Collectors.groupingBy(Bogie::getName));
+                
+        System.out.println("Grouped Bogies by Type:");
+        groupedBogies.forEach((type, list) -> {
+            System.out.println(type + " -> " + list);
+        });
+    }
+
     static class Bogie {
         private String name;
         private int capacity;
@@ -194,5 +215,8 @@ public class TrainConsistManagementApp {
         
         System.out.println("\n--- UC8: Filter Bogies Using Streams ---");
         app.filterBogiesByCapacity();
+        
+        System.out.println("\n--- UC9: Group Bogies by Type (Collectors.groupingBy) ---");
+        app.groupBogiesByType();
     }
 }
